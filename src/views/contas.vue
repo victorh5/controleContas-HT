@@ -41,6 +41,7 @@
               outlined
               v-model="contaAtual.valor"
               hide-details
+              type="number"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -88,7 +89,12 @@
           <v-toolbar-title>Balanço:</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          R$ 150.00
+          <v-card
+            flat
+            :class="balancoGeral >= 0 ? 'success--text' : 'red--text'"
+          >
+            R$ {{ balancoGeral.toFixed(2) }}
+          </v-card>
         </v-toolbar>
       </template>
 
@@ -100,6 +106,9 @@
         </v-icon>
         <v-icon small @click="excluir(item)"> mdi-delete </v-icon>
       </template>
+      <template v-slot:[`item.valor`]="{ item }">
+        R$ {{ item.valor.toFixed(2) }}
+      </template>
 
       <template v-slot:no-data>
         <v-row justify="center">
@@ -107,6 +116,80 @@
         </v-row>
       </template>
     </v-data-table>
+
+    <!-- Janela de confirmação -->
+    <v-dialog v-model="confirmaExclusaoDialog" persistent max-width="300">
+      <v-card>
+        <v-card-title class="headline"> Deseja excluir a conta? </v-card-title>
+        <v-card-text></v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="warning darken-1" text @click="cancelarExclusao">
+            Não
+          </v-btn>
+          <v-btn color="success darken-1" text @click="confirmarExclusao">
+            Sim
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Janela de Detalhes -->
+    <v-dialog v-model="detalhesDialog" max-width="600">
+      <v-card>
+        <v-card-title class="headline"> Detalhes da conta </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" sm="4">
+              <v-text-field
+                label="Descrição"
+                outlined
+                :value="contaAtualDetalhe.descricao"
+                hide-details
+                readonly
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="4">
+              <v-select
+                :items="tipo"
+                label="Tipo"
+                :value="contaAtualDetalhe.tipo"
+                outlined
+                hide-details
+                readonly
+              ></v-select>
+            </v-col>
+            <v-col cols="12" sm="4">
+              <v-text-field
+                label="Valor"
+                outlined
+                :value="contaAtualDetalhe.valor.toFixed(2)"
+                hide-details
+                type="number"
+                readonly
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-textarea
+                outlined
+                label="Observações"
+                :value="contaAtualDetalhe.observacoes"
+                hide-details
+                readonly
+              ></v-textarea>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="warning darken-1" text @click="detalhesDialog = false">
+            Fechar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -116,8 +199,15 @@ export default {
     return {
       mostrarFormulario: false,
       contaAtual: {},
+      confirmaExclusaoDialog: false,
+      contaExcluir: null,
       tipo: ["Receita", "Despesa"],
       geradorDeId: 3,
+      balancoGeral: 0.0,
+      detalhesDialog: false,
+      contaAtualDetalhe: {
+        valor: 0,
+      },
       cabecalho: [
         {
           text: "Descrição",
@@ -134,6 +224,7 @@ export default {
         {
           text: "Ações",
           value: "acoes",
+          sortable: false,
         },
       ],
       contas: [],
@@ -150,7 +241,7 @@ export default {
           descricao: "Conta 1",
           observacoes: "Conta 1 submetida",
           tipo: "Receita",
-          valor: 0.0,
+          valor: 10.0,
         },
         {
           id: 1,
@@ -167,14 +258,57 @@ export default {
           valor: 20.0,
         },
       ];
+      this.calcularBalanco();
     },
-    salvar() {},
-    cancelar() {},
+    salvar() {
+      let contaNova = {};
+      Object.assign(contaNova, this.contaAtual);
+      contaNova.id = this.geradorDeId;
+      contaNova.valor = parseFloat(contaNova.valor);
+      this.contas.push(contaNova);
+      this.geradorDeId++;
+      this.calcularBalanco();
+      this.cancelar();
+    },
+    cancelar() {
+      this.mostrarFormulario = false;
+      this.contaAtual = {};
+      this.contaExcluir = null;
+    },
     abrirFormulario() {
       this.mostrarFormulario = true;
     },
-    detalhes() {},
-    excluir() {},
+    detalhes(conta) {
+      this.detalhesDialog = true;
+      this.contaAtualDetalhe = conta;
+    },
+    excluir(conta) {
+      this.confirmaExclusaoDialog = true;
+      this.contaExcluir = conta;
+    },
+    confirmarExclusao() {
+      this.contas.forEach((conta, index) => {
+        if (conta.id == this.contaExcluir.id) {
+          this.contas.splice(index, 1);
+        }
+      });
+      this.confirmaExclusaoDialog = false;
+      this.calcularBalanco();
+    },
+    cancelarExclusao() {
+      this.confirmaExclusaoDialog = false;
+      this.cancelar();
+    },
+    calcularBalanco() {
+      this.balancoGeral = 0;
+      this.contas.forEach((conta) => {
+        if (conta.tipo === "Receita") {
+          this.balancoGeral += conta.valor;
+        } else {
+          this.balancoGeral -= conta.valor;
+        }
+      });
+    },
   },
 };
 </script>
