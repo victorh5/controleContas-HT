@@ -106,6 +106,13 @@
         </v-icon>
         <v-icon small @click="excluir(item)"> mdi-delete </v-icon>
       </template>
+
+      <template v-slot:[`item.tipo`]="{ item }">
+        <div :class="item.tipo === 'Receita' ? 'green--text' : 'red--text'">
+          {{ item.tipo }}
+        </div>
+      </template>
+
       <template v-slot:[`item.valor`]="{ item }">
         R$ {{ item.valor.toFixed(2) }}
       </template>
