@@ -63,13 +63,14 @@
                   label="Data"
                   prepend-icon="mdi-calendar"
                   outlined
+                  readonly
                   v-on="on"
                 ></v-text-field>
               </template>
               <v-date-picker
                 v-model="contaAtual.data"
                 no-title
-                @input="formatarData"
+                @input="formatarDataMenu"
               ></v-date-picker>
             </v-menu>
           </v-col>
@@ -144,6 +145,9 @@
       <template v-slot:[`item.valor`]="{ item }">
         R$ {{ item.valor.toFixed(2) }}
       </template>
+      <template v-slot:[`item.data`]="{ item }">
+        {{ formatarData(item.data) }}
+      </template>
 
       <template v-slot:no-data>
         <v-row justify="center">
@@ -195,27 +199,27 @@
               ></v-select>
             </v-col>
           </v-row>
-          <v-col cols="12" sm="6">
-            <v-text-field
-              label="Valor"
-              outlined
-              :value="contaAtualDetalhe.valor.toFixed(2)"
-              hide-details
-              type="number"
-              readonly
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="6">
-            <v-text-field
-              label="Valor"
-              outlined
-              :value="contaAtualDetalhe.data"
-              hide-details
-              type="number"
-              readonly
-            ></v-text-field>
-          </v-col>
-          <v-row> </v-row>
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                label="Valor"
+                outlined
+                :value="contaAtualDetalhe.valor.toFixed(2)"
+                hide-details
+                type="number"
+                readonly
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                label="Valor"
+                outlined
+                :value="formatarData(contaAtualDetalhe.data)"
+                hide-details
+                readonly
+              ></v-text-field>
+            </v-col>
+          </v-row>
           <v-row>
             <v-col cols="12">
               <v-textarea
@@ -256,6 +260,7 @@ export default {
       detalhesDialog: false,
       contaAtualDetalhe: {
         valor: 0,
+        data: "",
       },
       cabecalho: [
         {
@@ -288,30 +293,30 @@ export default {
   },
   methods: {
     initialize() {
-      this.contas = [
-        {
-          id: 0,
-          descricao: "Conta 1",
-          observacoes: "Conta 1 submetida",
-          tipo: "Receita",
-          data: "",
-          valor: 10.0,
-        },
-        {
-          id: 1,
-          descricao: "Conta 2",
-          observacoes: "Conta 2 submetida",
-          tipo: "Despesa",
-          valor: 10.0,
-        },
-        {
-          id: 2,
-          descricao: "Conta 3",
-          observacoes: "Conta 3 submetida",
-          tipo: "Receita",
-          valor: 20.0,
-        },
-      ];
+      // this.contas = [
+      //   {
+      //     id: 0,
+      //     descricao: "Conta 1",
+      //     observacoes: "Conta 1 submetida",
+      //     tipo: "Receita",
+      //     data: "",
+      //     valor: 10.0,
+      //   },
+      //   {
+      //     id: 1,
+      //     descricao: "Conta 2",
+      //     observacoes: "Conta 2 submetida",
+      //     tipo: "Despesa",
+      //     valor: 10.0,
+      //   },
+      //   {
+      //     id: 2,
+      //     descricao: "Conta 3",
+      //     observacoes: "Conta 3 submetida",
+      //     tipo: "Receita",
+      //     valor: 20.0,
+      //   },
+      // ];
       this.calcularBalanco();
     },
     salvar() {
@@ -363,9 +368,12 @@ export default {
         }
       });
     },
-    formatarData() {
+    formatarDataMenu() {
       this.dataFormatada = dateFormatterUtil.ISOtoBR(this.contaAtual.data);
       this.menuDataDialog = false;
+    },
+    formatarData(data) {
+      return dateFormatterUtil.ISOtoBR(data);
     },
   },
 };
