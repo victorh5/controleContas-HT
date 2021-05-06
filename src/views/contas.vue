@@ -18,7 +18,7 @@
       <v-container>
         <div class="mb-3">Nova Conta</div>
         <v-row>
-          <v-col cols="12" sm="4">
+          <v-col cols="12" sm="6">
             <v-text-field
               label="Descrição"
               outlined
@@ -26,7 +26,7 @@
               hide-details
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="4">
+          <v-col cols="12" sm="6">
             <v-select
               :items="tipo"
               label="Tipo"
@@ -35,7 +35,10 @@
               hide-details
             ></v-select>
           </v-col>
-          <v-col cols="12" sm="4">
+        </v-row>
+
+        <v-row>
+          <v-col cols="12" sm="6">
             <v-text-field
               label="Valor"
               outlined
@@ -44,7 +47,36 @@
               type="number"
             ></v-text-field>
           </v-col>
+          <v-col cols="12" sm="6">
+            <v-menu
+              ref="menuDataDialog"
+              v-model="menuDataDialog"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="dataFormatada"
+                  label="Data"
+                  hint="MM/DD/YYYY"
+                  persistent-hint
+                  prepend-icon="mdi-calendar"
+                  @blur="date = parseDate(dateFormatted)"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="date"
+                no-title
+                @input="menu1 = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
         </v-row>
+
         <v-row>
           <v-col cols="12">
             <v-textarea
@@ -97,8 +129,6 @@
           </v-card>
         </v-toolbar>
       </template>
-
-      <!-- PAROU AQUI A AULA -->
 
       <template v-slot:[`item.acoes`]="{ item }">
         <v-icon small class="mr-2" @click="detalhes(item)">
@@ -207,6 +237,7 @@ export default {
       mostrarFormulario: false,
       contaAtual: {},
       confirmaExclusaoDialog: false,
+      menuDataDialog: false,
       contaExcluir: null,
       tipo: ["Receita", "Despesa"],
       geradorDeId: 3,
@@ -229,6 +260,10 @@ export default {
           value: "valor",
         },
         {
+          text: "Data",
+          value: "data",
+        },
+        {
           text: "Ações",
           value: "acoes",
           sortable: false,
@@ -248,6 +283,7 @@ export default {
           descricao: "Conta 1",
           observacoes: "Conta 1 submetida",
           tipo: "Receita",
+          data: "",
           valor: 10.0,
         },
         {
