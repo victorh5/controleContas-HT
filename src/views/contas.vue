@@ -61,9 +61,8 @@
                 <v-text-field
                   v-model="dataFormatada"
                   label="Data"
-                  hint="MM/DD/YYYY"
-                  persistent-hint
                   prepend-icon="mdi-calendar"
+                  outlined
                   v-on="on"
                 ></v-text-field>
               </template>
@@ -230,6 +229,7 @@
 </template>
 
 <script>
+import dateFormatterUtil from "@/util/dateFormatterUtil";
 export default {
   data() {
     return {
@@ -237,6 +237,7 @@ export default {
       contaAtual: {},
       confirmaExclusaoDialog: false,
       menuDataDialog: false,
+      dataFormatada: "",
       contaExcluir: null,
       tipo: ["Receita", "Despesa"],
       geradorDeId: 3,
@@ -350,6 +351,10 @@ export default {
           this.balancoGeral -= conta.valor;
         }
       });
+    },
+    formatarData() {
+      this.dataFormatada = dateFormatterUtil.ISOtoBR(this.contaAtual.data);
+      this.menuDataDialog = false;
     },
   },
 };
