@@ -1,30 +1,64 @@
 <template>
   <div>
-    <v-card class="mt-4 mx-auto">
-      <v-sheet
-        class="v-sheet--offset mx-auto"
-        color="cyan"
-        elevation="12"
-        max-width="calc(100% - 32px)"
-      >
+    <v-container>
+      <v-card class="mt-4 mx-auto" color="grey">
         <v-sparkline
-          :labels="labels"
-          :value="value"
+          :labels="rotulos"
+          :value="valores"
           color="white"
-          line-width="2"
-          padding="16"
+          line-width="1"
+          padding="20"
         ></v-sparkline>
-      </v-sheet>
-    </v-card>
+      </v-card>
+    </v-container>
   </div>
 </template>
 
 <script>
 export default {
   data: () => ({
-    labels: ["12am", "3am", "6am", "9am", "12pm", "3pm", "6pm", "9pm"],
-    value: [200, 675, 410, 390, 310, 460, 250, 240],
+    rotulos: [],
+    valores: [],
+    contas: [],
   }),
+  created() {
+    this.initialize();
+  },
+  methods: {
+    initialize() {
+      this.contas = [
+        {
+          id: 0,
+          descricao: "Conta 1",
+          observacoes: "Conta 1 submetida",
+          tipo: "Receita",
+          data: "2020-05-25",
+          valor: 10.0,
+        },
+        {
+          id: 1,
+          descricao: "Conta 2",
+          observacoes: "Conta 2 submetida",
+          tipo: "Despesa",
+          data: "2020-05-28",
+          valor: 10.0,
+        },
+        {
+          id: 2,
+          descricao: "Conta 3",
+          observacoes: "Conta 3 submetida",
+          tipo: "Receita",
+          data: "2020-05-30",
+          valor: 20.0,
+        },
+      ];
+
+      this.contas.forEach((conta, index) => {
+        this.rotulos[index] = conta.data;
+        this.valores[index] = conta.valor;
+      });
+    },
+  },
 };
 </script>
 
