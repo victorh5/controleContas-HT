@@ -64,14 +64,13 @@
                   hint="MM/DD/YYYY"
                   persistent-hint
                   prepend-icon="mdi-calendar"
-                  @blur="date = parseDate(dateFormatted)"
                   v-on="on"
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="date"
+                v-model="contaAtual.data"
                 no-title
-                @input="menu1 = false"
+                @input="formatarData"
               ></v-date-picker>
             </v-menu>
           </v-col>
