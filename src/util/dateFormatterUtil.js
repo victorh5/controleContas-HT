@@ -6,4 +6,4 @@ class dateFormatterUtil {
     }
 }
 
-export default dateFormatterUtil
+export default new dateFormatterUtil()
