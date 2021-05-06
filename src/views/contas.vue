@@ -175,7 +175,7 @@
         <v-card-title class="headline"> Detalhes da conta </v-card-title>
         <v-card-text>
           <v-row>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" sm="6">
               <v-text-field
                 label="Descrição"
                 outlined
@@ -184,7 +184,7 @@
                 readonly
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" sm="6">
               <v-select
                 :items="tipo"
                 label="Tipo"
@@ -194,17 +194,28 @@
                 readonly
               ></v-select>
             </v-col>
-            <v-col cols="12" sm="4">
-              <v-text-field
-                label="Valor"
-                outlined
-                :value="contaAtualDetalhe.valor.toFixed(2)"
-                hide-details
-                type="number"
-                readonly
-              ></v-text-field>
-            </v-col>
           </v-row>
+          <v-col cols="12" sm="6">
+            <v-text-field
+              label="Valor"
+              outlined
+              :value="contaAtualDetalhe.valor.toFixed(2)"
+              hide-details
+              type="number"
+              readonly
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-text-field
+              label="Valor"
+              outlined
+              :value="contaAtualDetalhe.data"
+              hide-details
+              type="number"
+              readonly
+            ></v-text-field>
+          </v-col>
+          <v-row> </v-row>
           <v-row>
             <v-col cols="12">
               <v-textarea
