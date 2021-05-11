@@ -53,10 +53,13 @@ export default {
         },
       ];
 
-      this.contas.forEach((conta, index) => {
-        this.rotulos[index] = conta.data;
-        this.valores[index] = conta.valor;
-      });
+      let hoje = new Date().toISOString().slice(0, 10);
+      console.log(hoje);
+
+      // this.contas.forEach((conta, index) => {
+      //   this.rotulos[index] = conta.data;
+      //   this.valores[index] = conta.valor;
+      // });
     },
   },
 };
