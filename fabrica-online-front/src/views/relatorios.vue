@@ -54,7 +54,11 @@ export default {
       ];
 
       let hoje = new Date().toISOString().slice(0, 10);
+      let ano = new Date().toISOString().slice(0, 4);
+      let mes = new Date().toISOString().slice(5, 7);
       console.log(hoje);
+      console.log(ano);
+      console.log(mes);
 
       // this.contas.forEach((conta, index) => {
       //   this.rotulos[index] = conta.data;
