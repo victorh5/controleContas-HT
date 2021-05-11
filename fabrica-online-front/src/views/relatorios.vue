@@ -20,6 +20,19 @@ export default {
     rotulos: [],
     valores: [],
     contas: [],
+    mesAbrev: [
+      "jan",
+      "fev",
+      "abr",
+      "mai",
+      "jun",
+      "jul",
+      "ago",
+      "set",
+      "out",
+      "nov",
+      "dez",
+    ],
   }),
   created() {
     this.initialize();
