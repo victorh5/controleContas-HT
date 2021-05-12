@@ -71,6 +71,7 @@ export default {
       let mes = new Date().toISOString().slice(5, 7);
 
       this.rotulos = this.mesAbrev.slice(0, parseInt(mes));
+      this.valores = new Array(parseInt(mes));
 
       console.log(this.rotulos);
 
