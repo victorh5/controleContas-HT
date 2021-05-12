@@ -2,6 +2,9 @@ const Express = require('express');
 const Mongoose = require('mongoose');
 const Cors = require('cors');
 
+const env = process.NODE_ENV || "development"
+const config = require('./config.json')[env]
+
 class App {
 
     constructor() {
@@ -14,7 +17,7 @@ class App {
         this.app.use(Cors())
 
         Mongoose.connect(
-            "mongodb+srv://victorh5:fabrica-online@cluster0.ejw64.mongodb.net/fabrica-online-db?retryWrites=true&w=majority",
+            `${config.database.protocol}://${config.database.user}:${config.database.password}@${config.database.host}/${config.database.name}?retryWrites=true&w=majority`,
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
@@ -22,11 +25,11 @@ class App {
         )
 
         this.app.get("/", (req, res) => {
-            res.send(" OLA MUNDO A ")
+            res.send("OLA MUNDO")
         })
 
-        this.app.listen(3000, () => {
-            console.log("Servidor rodando na porta 3000...");
+        this.app.listen(config.port, () => {
+            console.log(`Servidor rodando em: http://${config.host}:${config.port}`);
         })
     }
 }

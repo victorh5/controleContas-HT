@@ -1,0 +1,13 @@
+{
+    "development": {
+        "host": "localhost",
+        "port": "3000",
+        "database": {
+            "user": "victorh5",
+            "password": "fabrica-online",
+            "protocol": "mongodb+srv",
+            "host": "cluster0.ejw64.mongodb.net",
+            "name": "fabrica-online-db"
+        }
+    }
+}
