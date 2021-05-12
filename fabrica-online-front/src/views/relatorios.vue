@@ -1,6 +1,9 @@
 <template>
   <div>
     <v-container>
+      <v-card color="grey" dark>
+        <v-card-title>Balanço do Ano</v-card-title>
+      </v-card>
       <v-card class="mt-4 mx-auto" color="grey">
         <v-sparkline
           :labels="rotulos"
@@ -11,12 +14,22 @@
         ></v-sparkline>
       </v-card>
     </v-container>
+    <v-container>
+      <v-card class="my-4" color="success" dark>
+        <v-card-title>Total Receitas: {{ totalReceitas }}</v-card-title>
+      </v-card>
+      <v-card class="my-4" color="red" dark>
+        <v-card-title>Total Despesas: {{ totalDespesas }}</v-card-title>
+      </v-card>
+    </v-container>
   </div>
 </template>
 
 <script>
 export default {
   data: () => ({
+    totalDespesas: 0,
+    totalReceitas: 0,
     rotulos: [],
     valores: [],
     contas: [],
@@ -60,7 +73,7 @@ export default {
           id: 2,
           descricao: "Conta 3",
           observacoes: "Conta 3 submetida",
-          tipo: "Receita",
+          tipo: "Despesa",
           data: "2021-05-30",
           valor: 20.0,
         },
@@ -94,7 +107,16 @@ export default {
         if (ano === conta.data.slice(0, 4)) {
           let mesConta = parseInt(conta.data.slice(5, 7));
 
-          this.valores[mesConta - 1] += conta.valor;
+          if (conta.tipo === "Receita") {
+            this.valores[mesConta - 1] += conta.valor;
+          } else {
+            this.valores[mesConta - 1] += conta.valor * -1;
+          }
+        }
+        if (conta.tipo === "Receita") {
+          this.totalReceitas += conta.valor;
+        } else {
+          this.totalDespesas += conta.valor;
         }
       });
 
