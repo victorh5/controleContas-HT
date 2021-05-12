@@ -24,5 +24,9 @@ class Usuario extends Mongoose.Schema {
                 required: true,
             },
         })
+
+        Mongoose.model("Usuario", this)
     }
 }
+
+module.exports = Usuario
