@@ -45,7 +45,7 @@ export default {
           descricao: "Conta 1",
           observacoes: "Conta 1 submetida",
           tipo: "Receita",
-          data: "2020-05-25",
+          data: "2021-05-25",
           valor: 10.0,
         },
         {
@@ -53,7 +53,7 @@ export default {
           descricao: "Conta 2",
           observacoes: "Conta 2 submetida",
           tipo: "Despesa",
-          data: "2020-05-28",
+          data: "2021-05-28",
           valor: 10.0,
         },
         {
@@ -61,25 +61,40 @@ export default {
           descricao: "Conta 3",
           observacoes: "Conta 3 submetida",
           tipo: "Receita",
-          data: "2020-05-30",
+          data: "2021-05-30",
           valor: 20.0,
+        },
+        {
+          id: 3,
+          descricao: "Conta 3",
+          observacoes: "Conta 3 submetida",
+          tipo: "Receita",
+          data: "2021-04-26",
+          valor: 50.0,
+        },
+        {
+          id: 4,
+          descricao: "Conta 3",
+          observacoes: "Conta 3 submetida",
+          tipo: "Receita",
+          data: "2021-03-15",
+          valor: 25.0,
         },
       ];
 
-      // let hoje = new Date().toISOString().slice(0, 10);
-      let ano = new Date().toISOString().slice(0, 4);
-      let mes = new Date().toISOString().slice(5, 7);
+      let hoje = new Date().toISOString().slice(0, 10);
+
+      let ano = hoje.slice(0, 4);
+      let mes = hoje.slice(5, 7);
 
       this.rotulos = this.mesAbrev.slice(0, parseInt(mes));
       this.valores = new Array(parseInt(mes)).fill(0);
 
       this.contas.forEach((conta) => {
-        if (parseInt(ano) === conta.data.slice(0, 4)) {
+        if (ano === conta.data.slice(0, 4)) {
           let mesConta = parseInt(conta.data.slice(5, 7));
 
           this.valores[mesConta - 1] += conta.valor;
-
-          console.log(mesConta);
         }
       });
 
