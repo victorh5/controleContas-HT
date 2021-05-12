@@ -67,13 +67,21 @@ export default {
       ];
 
       // let hoje = new Date().toISOString().slice(0, 10);
-      // let ano = new Date().toISOString().slice(0, 4);
+      let ano = new Date().toISOString().slice(0, 4);
       let mes = new Date().toISOString().slice(5, 7);
 
       this.rotulos = this.mesAbrev.slice(0, parseInt(mes));
-      this.valores = new Array(parseInt(mes));
+      this.valores = new Array(parseInt(mes)).fill(0);
 
-      console.log(this.rotulos);
+      this.contas.forEach((conta) => {
+        if (parseInt(ano) === conta.data.slice(0, 4)) {
+          let mesConta = parseInt(conta.data.slice(5, 7));
+
+          this.valores[mesConta - 1] += conta.valor;
+
+          console.log(mesConta);
+        }
+      });
 
       // this.contas.forEach((conta, index) => {
       //   this.rotulos[index] = conta.data;
