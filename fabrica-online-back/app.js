@@ -5,6 +5,8 @@ const Cors = require('cors');
 const env = process.NODE_ENV || "development"
 const config = require('./config.json')[env]
 
+const Usuario = require("./src/model/Usuario")
+
 class App {
 
     constructor() {
@@ -23,6 +25,10 @@ class App {
                 useUnifiedTopology: true,
             }
         )
+
+        new Usuario()
+
+        const UsuarioRoute = require("./src/routes/UsuarioRoute")
 
         this.app.get("/", (req, res) => {
             res.send("OLA MUNDO")
