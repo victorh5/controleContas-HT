@@ -91,12 +91,12 @@
 </template>
 
 <script>
+import UsuarioHttpUtil from "@/util/UsuarioHttpUtil";
 export default {
   data: () => ({
     itemEdicao: null,
     usuarios: [],
     usuarioAtual: {},
-    geradorDeId: 3,
     mostrarFormulario: false,
     cabecalho: [
       {
@@ -130,32 +130,9 @@ export default {
 
   methods: {
     initialize() {
-      this.usuarios = [
-        {
-          id: 0,
-          nome: "Victor Hugo",
-          username: "victorh5",
-          senha: "123",
-          email: "victorh5900@gmail.com",
-          ativo: true,
-        },
-        {
-          id: 1,
-          nome: "Nathan Ricardo",
-          username: "nathan21",
-          senha: "234",
-          email: "nathanrich@gmail.com",
-          ativo: false,
-        },
-        {
-          id: 2,
-          nome: "Matheus Gonçalves",
-          username: "mtsgod1",
-          senha: "567",
-          email: "mtsgod1@gmail.com",
-          ativo: true,
-        },
-      ];
+      UsuarioHttpUtil.buscarTodos().then((usuarios) => {
+        this.usuarios = usuarios;
+      });
     },
 
     abrirFormulario() {
@@ -187,18 +164,27 @@ export default {
     adicionar() {
       let usuarioCopia = {};
       Object.assign(usuarioCopia, this.usuarioAtual);
-      usuarioCopia.id = this.geradorDeId;
       usuarioCopia.ativo = true;
-      this.usuarios.push(usuarioCopia);
-      this.geradorDeId++;
+
+      UsuarioHttpUtil.adicionar(usuarioCopia).then((resposta) => {
+        if (resposta.status == 200) {
+          alert("Usuário Cadastrado com sucesso!");
+          this.initialize();
+        } else {
+          alert("Erro ao cadastrar usuário");
+        }
+      });
     },
 
     salvarEdicao() {
-      for (let i = 0; i < this.usuarios.length; i++) {
-        if (this.itemEdicao.id == this.usuarios[i].id) {
-          this.usuarios.splice(i, 1, this.itemEdicao);
+      UsuarioHttpUtil.editar(this.itemEdicao).then((resposta) => {
+        if (resposta.status == 200) {
+          alert("Usuário editado com sucesso!");
+          this.initialize();
+        } else {
+          alert("Erro ao editar usuário.");
         }
-      }
+      });
     },
 
     cancelar() {

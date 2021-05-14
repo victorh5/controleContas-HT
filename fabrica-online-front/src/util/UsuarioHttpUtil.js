@@ -8,9 +8,9 @@ export default {
     },
 
     async adicionar(usuario) {
-        return axios.post(API_URL, usuario).then((response) => response.data)
+        return axios.post(API_URL, usuario).then((response) => response)
     },
     async editar(usuario) {
-        return axios.put(API_URL, usuario).then((response) => response.data)
+        return axios.put(API_URL, usuario).then((response) => response)
     },
 }
