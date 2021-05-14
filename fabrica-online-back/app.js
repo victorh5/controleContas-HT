@@ -6,6 +6,7 @@ const env = process.NODE_ENV || "development"
 const config = require('./config.json')[env]
 
 const Usuario = require("./src/model/Usuario")
+const Conta = require("./src/model/Conta")
 
 class App {
 
@@ -28,10 +29,13 @@ class App {
         )
 
         new Usuario()
+        new Conta()
 
         const UsuarioRoute = require("./src/routes/UsuarioRoute")
+        const ContaRoute = require("./src/routes/ContaRoute")
 
         new UsuarioRoute(this.app)
+        new ContaRoute(this.app)
 
         this.app.get("/", (req, res) => {
             res.send("OLA MUNDO")

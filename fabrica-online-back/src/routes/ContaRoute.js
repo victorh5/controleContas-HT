@@ -1,14 +1,14 @@
-const UsuarioController = require("../controller/UsuarioController")
+const ContaController = require("../controller/ContaController")
 
-class UsuarioRoute {
+class ContaRoute {
 
     constructor(app) {
 
         app
-            .route("/usuarios")
-            .get(UsuarioController.buscarTodos)
-            .post(UsuarioController.adicionar)
-            .put(UsuarioController.editar)
+            .route("/contas")
+            .get(ContaController.buscarTodos)
+            .post(ContaController.adicionar)
+            .delete(ContaController.deletar)
     }
 }
-module.exports = UsuarioRoute
+module.exports = ContaRoute

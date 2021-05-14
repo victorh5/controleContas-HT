@@ -1,39 +1,39 @@
 const Mongoose = require("mongoose")
-const Usuario = Mongoose.model("Usuario")
+const Conta = Mongoose.model("Conta")
 
-class UsuarioController {
+class ContaController {
 
     static async buscarTodos(req, res) {
 
         try {
-            res.status(200).json(await Usuario.find({}))
+            res.status(200).json(await Conta.find({}))
         } catch (error) {
-            console.log(`[USUARIOS] : BUSCAR TODOS => ERRO: ${error}`)
-            res.status(500).send(`Erro ao buscar usuarios`)
+            console.log(`[CONTA] : BUSCAR TODOS => ERRO: ${error}`)
+            res.status(500).send(`Erro ao buscar conta`)
         }
     }
 
     static async adicionar(req, res) {
 
         try {
-            let usuarioNovo = req.body;
-            res.status(200).json(await Usuario.create(usuarioNovo))
+            let contaNova = req.body;
+            res.status(200).json(await Conta.create(contaNova))
         } catch (error) {
-            console.log(`[USUARIOS] : ADICIONAR => ERRO: ${error}`)
-            res.status(500).send(`Erro ao adicionar usuarios`)
+            console.log(`[CONTA] : ADICIONAR => ERRO: ${error}`)
+            res.status(500).send(`Erro ao adicionar conta`)
         }
     }
 
-    static async editar(req, res) {
+    static async deletar(req, res) {
 
         try {
-            let usuarioEditar = req.body;
-            res.status(200).json(await Usuario.findByIdAndUpdate(usuarioEditar._id, usuarioEditar))
+            let contaDeletar = req.body;
+            res.status(200).json(await Conta.findByIdAndDelete(contaDeletar._id, contaDeletar))
         } catch (error) {
-            console.log(`[USUARIOS] : EDITAR => ERRO: ${error}`)
-            res.status(500).send(`Erro ao editar usuarios`)
+            console.log(`[CONTA] : DELETAR => ERRO: ${error}`)
+            res.status(500).send(`Erro ao deletar conta`)
         }
     }
 }
 
-module.exports = UsuarioController;
+module.exports = ContaController;
