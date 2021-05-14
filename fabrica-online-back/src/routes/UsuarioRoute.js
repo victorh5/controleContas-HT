@@ -9,7 +9,6 @@ class UsuarioRoute {
             .get(UsuarioController.buscarTodos)
             .post(UsuarioController.adicionar)
             .put(UsuarioController.editar)
-            .delete(UsuarioController.deletar)
     }
 }
 module.exports = UsuarioRoute

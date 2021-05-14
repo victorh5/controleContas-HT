@@ -23,12 +23,15 @@ class App {
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
+                useFindAndModify: true
             }
         )
 
         new Usuario()
 
         const UsuarioRoute = require("./src/routes/UsuarioRoute")
+
+        new UsuarioRoute(this.app)
 
         this.app.get("/", (req, res) => {
             res.send("OLA MUNDO")
