@@ -27,8 +27,10 @@ class ContaController {
     static async deletar(req, res) {
 
         try {
-            let contaDeletar = req.body;
-            res.status(200).json(await Conta.findByIdAndDelete(contaDeletar._id, contaDeletar))
+            let idDeletar = req.params.id;
+
+            console.log("ID DELETAR = " + idDeletar)
+            res.status(200).json(await Conta.findByIdAndDelete(idDeletar))
         } catch (error) {
             console.log(`[CONTA] : DELETAR => ERRO: ${error}`)
             res.status(500).send(`Erro ao deletar conta`)

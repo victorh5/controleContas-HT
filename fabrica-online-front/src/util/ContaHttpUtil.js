@@ -8,9 +8,9 @@ export default {
     },
 
     async adicionar(conta) {
-        return axios.post(API_URL, conta).then((response) => response.data)
+        return axios.post(API_URL, conta).then((response) => response)
     },
     async deletar(conta) {
-        return axios.delete(API_URL, conta).then((response) => response.data)
+        return axios.delete(API_URL + `/${conta._id}`).then((response) => response)
     },
 }

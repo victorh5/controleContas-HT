@@ -8,6 +8,9 @@ class ContaRoute {
             .route("/contas")
             .get(ContaController.buscarTodos)
             .post(ContaController.adicionar)
+
+        app
+            .route("/contas/:id")
             .delete(ContaController.deletar)
     }
 }

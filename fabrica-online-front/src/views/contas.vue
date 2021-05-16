@@ -245,7 +245,7 @@
 
 <script>
 import dateFormatterUtil from "@/util/dateFormatterUtil";
-//import ContaHttpUtil from "@/util/ContaHttpUtil";
+import ContaHttpUtil from "@/util/ContaHttpUtil";
 export default {
   data() {
     return {
@@ -256,7 +256,6 @@ export default {
       dataFormatada: "",
       contaExcluir: null,
       tipo: ["Receita", "Despesa"],
-      geradorDeId: 3,
       balancoGeral: 0.0,
       detalhesDialog: false,
       contaAtualDetalhe: {
@@ -294,20 +293,22 @@ export default {
   },
   methods: {
     initialize() {
-      // ContaHttpUtil.buscarTodos().then((conta) => {
-      //   this.conta = conta;
-      // });
-      this.calcularBalanco();
+      ContaHttpUtil.buscarTodos().then((contas) => {
+        this.contas = contas;
+        this.calcularBalanco();
+      });
     },
     salvar() {
       let contaNova = {};
       Object.assign(contaNova, this.contaAtual);
-      contaNova.id = this.geradorDeId;
       contaNova.valor = parseFloat(contaNova.valor);
-      this.contas.push(contaNova);
-      this.geradorDeId++;
-      this.calcularBalanco();
-      this.cancelar();
+
+      ContaHttpUtil.adicionar(contaNova).then((resposta) => {
+        if (resposta.status == 200) {
+          this.initialize();
+          this.cancelar();
+        }
+      });
     },
     cancelar() {
       this.mostrarFormulario = false;
@@ -326,13 +327,15 @@ export default {
       this.contaExcluir = conta;
     },
     confirmarExclusao() {
-      this.contas.forEach((conta, index) => {
-        if (conta.id == this.contaExcluir.id) {
-          this.contas.splice(index, 1);
+      ContaHttpUtil.deletar(this.contaExcluir).then((resposta) => {
+        if (resposta.status == 200) {
+          alert("Conta excluida com sucesso");
+          this.confirmaExclusaoDialog = false;
+          this.initialize();
+        } else {
+          alert("erro ao excluir conta");
         }
       });
-      this.confirmaExclusaoDialog = false;
-      this.calcularBalanco();
     },
     cancelarExclusao() {
       this.confirmaExclusaoDialog = false;
