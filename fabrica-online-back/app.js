@@ -41,7 +41,7 @@ class App {
             res.send("OLA MUNDO")
         })
 
-        this.app.listen(config.port, () => {
+        this.app.listen(process.env.PORT, () => {
             console.log(`Servidor rodando em: http://${config.host}:${config.port}`);
         })
     }
