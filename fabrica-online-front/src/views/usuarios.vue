@@ -140,7 +140,17 @@ export default {
     },
 
     ativarInativar(usuario) {
-      usuario.ativo = !usuario.ativo;
+      if (confirm("Tem certeza que deseja mudar o status desse usuario?")) {
+        usuario.ativo = !usuario.ativo;
+
+        UsuarioHttpUtil.editar(usuario).then((resposta) => {
+          if (resposta.status == 200) {
+            alert("Status do usuario alterado!");
+          } else {
+            alert("Erro ao alterar status!");
+          }
+        });
+      }
     },
 
     salvar() {
