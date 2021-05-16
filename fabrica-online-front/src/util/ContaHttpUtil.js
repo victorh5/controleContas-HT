@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/contas"
+const API_URL = "https://controle-contas-victor.herokuapp.com/contas"
 
 import axios from "axios"
 
